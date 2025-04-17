@@ -1,0 +1,14 @@
+{
+  "name": "catmash_backend",
+  "version": "1.0.0",
+  "description": "backend for catmash app Web application that lets you find the cutest cat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "catmash"
+  ],
+  "author": "Salim Hassouna",
+  "license": "ISC"
+}
