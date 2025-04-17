@@ -4,6 +4,7 @@
   "description": "backend for catmash app Web application that lets you find the cutest cat",
   "main": "index.js",
   "scripts": {
+    "start": "node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -12,6 +13,8 @@
   "author": "Salim Hassouna",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.8.4",
+    "dotenv": "^16.5.0",
     "pg": "^8.14.1"
   }
 }
