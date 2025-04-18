@@ -6,10 +6,10 @@ const express = require("express");
 const cors = require("cors");
 
 // Import routes
-const catsRoutes = require("./routes/cats.routes");
+const catsRoutes = require("../src/routes/cats.routes");
 
 // Import the database function
-const syncImagesToDatabase = require("./db/database");
+const syncImagesToDatabase = require("../src/db/database");
 
 // Get the API URL from .env
 const url = `${process.env.API_BASE_URL}/data/cats.json`;
