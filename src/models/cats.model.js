@@ -1,3 +1,11 @@
+const { Pool } = require("pg");
+
+// Connect to PostgreSQL
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
+
 // ─────────────────────────────────────────────
 // GET / - Show home page
 // ─────────────────────────────────────────────
@@ -13,7 +21,27 @@ exports.showHomePage = async (req, res) => {
 // ─────────────────────────────────────────────
 // GET /cats - Fetch all cats with optional pagination
 // ─────────────────────────────────────────────
-exports.fetchAllCats = async (req, res) => {};
+exports.fetchAllCats = async (req, res) => {
+  // Parse the offset from the query parameters (default to 0 if not provided)
+  const offset = parseInt(req.query.offset) || 0;
+  // Parse the limit from the query parameters (default to 10 if not provided)
+  const limit = parseInt(req.query.limit) || 10;
+
+  try {
+    // Execute a SQL query to fetch images, ordered by score in descending order
+    const result = await pool.query(
+      "SELECT * FROM images ORDER BY score DESC LIMIT $1 OFFSET $2",
+      [limit, offset]
+    );
+
+    // Send the result (list of images) as a JSON response
+    res.json(result.rows);
+  } catch (err) {
+    // Log any errors and Send an error message in case of failure
+    console.error(err);
+    res.status(500).send("Error fetching images");
+  }
+};
 
 // ─────────────────────────────────────────────
 // GET /cats/:id - Fetch a single cat by its ID
