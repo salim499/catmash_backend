@@ -10,7 +10,9 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
+// ─────────────────────────────────────────────
 // Fetches images data from a given URL and inserts it into the PostgreSQL 'images' table
+// ─────────────────────────────────────────────
 const syncImagesToDatabase = async (url) => {
   try {
     // Fetch cats images from the latelier API URL
