@@ -74,7 +74,48 @@ exports.fetchCatById = async (req, res) => {
 // GET /cats/random - Fetch one or more random cats
 // Optional query: count, exclude (comma-separated list of IDs)
 // ─────────────────────────────────────────────
-exports.fetchRandomCats = async (req, res) => {};
+exports.fetchRandomCats = async (req, res) => {
+  // Destructure the 'exclude' query parameter
+  const { exclude } = req.query;
+
+  // Check if 'exclude' is an array or a single value, and convert it into an array
+  const excludeIds = Array.isArray(exclude)
+    ? exclude
+    : exclude
+    ? [exclude]
+    : [];
+
+  // Parse the 'limit' query parameter, default to 1 if not provided
+  const limit = parseInt(req.query.limit) || 1;
+
+  try {
+    // Start building the base SQL query to fetch images
+    let query = "SELECT * FROM images";
+    // Array to hold the query parameters (used for placeholders)
+    let params = [];
+
+    // If there are IDs to exclude, add a WHERE clause to filter out those images
+    if (excludeIds.length > 0) {
+      const placeholders = excludeIds.map((_, i) => `$${i + 1}`).join(", ");
+      query += ` WHERE id NOT IN (${placeholders})`;
+      params.push(...excludeIds);
+    }
+
+    // Add ORDER BY RANDOM() for random selection and apply the limit
+    query += ` ORDER BY RANDOM() LIMIT $${params.length + 1}`;
+    params.push(limit);
+
+    // Execute the query with the dynamic parameters
+    const result = await pool.query(query, params);
+
+    // Send the result (random images) as a JSON response
+    res.json(result.rows);
+  } catch (err) {
+    // Log any errors ans send error message
+    console.error(err);
+    res.status(500).send("Error fetching random cats");
+  }
+};
 
 // ─────────────────────────────────────────────
 // GET /cats/count - Fetch total number of cats
