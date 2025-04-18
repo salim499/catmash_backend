@@ -48,7 +48,27 @@ exports.fetchAllCats = async (req, res) => {
 // ─────────────────────────────────────────────
 // GET /cats/:id - Fetch a single cat by its ID
 // ─────────────────────────────────────────────
-exports.fetchCatById = async (req, res) => {};
+exports.fetchCatById = async (req, res) => {
+  // Destructure the 'id' parameter from the request URL
+  const { id } = req.params;
+
+  try {
+    // Execute a SQL query to fetch a specific image by its ID
+    const result = await pool.query("SELECT * FROM images WHERE id = $1", [id]);
+
+    // If no image is found
+    if (result.rows.length === 0) {
+      return res.status(404).send("Image not found");
+    }
+
+    // Send the fetched image as a JSON response
+    res.json(result.rows[0]);
+  } catch (err) {
+    // Log any errors and send err message in case failure
+    console.error(err);
+    res.status(500).send("Error fetching the image");
+  }
+};
 
 // ─────────────────────────────────────────────
 // GET /cats/random - Fetch one or more random cats
