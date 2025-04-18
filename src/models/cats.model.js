@@ -29,7 +29,19 @@ exports.fetchRandomCats = async (req, res) => {};
 // ─────────────────────────────────────────────
 // GET /cats/count - Fetch total number of cats
 // ─────────────────────────────────────────────
-exports.fetchCatsCount = async (req, res) => {};
+exports.fetchCatsCount = async (req, res) => {
+  try {
+    // Execute a SQL query to count the total number of cats in the "images" table
+    const result = await pool.query("SELECT COUNT(*) AS count FROM images");
+
+    // Send the result as a JSON response with the count as an integer
+    res.json({ count: parseInt(result.rows[0].count, 10) });
+  } catch (err) {
+    // Log any errors and send error message in case of failure
+    console.error(err);
+    res.status(500).send("Error counting cats");
+  }
+};
 
 // ─────────────────────────────────────────────
 // POST /cats/:id/score - Update the score of a specific cat
