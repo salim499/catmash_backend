@@ -1,11 +1,3 @@
-const { Pool } = require("pg");
-
-// Set up PostgreSQL connection (Render requires SSL)
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-});
-
 // ─────────────────────────────────────────────
 // GET / - Show home page
 // ─────────────────────────────────────────────
