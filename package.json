@@ -4,7 +4,7 @@
   "description": "backend for catmash app Web application that lets you find the cutest cat",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "node ./api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
