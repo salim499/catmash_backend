@@ -137,4 +137,33 @@ exports.fetchCatsCount = async (req, res) => {
 // ─────────────────────────────────────────────
 // POST /cats/:id/score - Update the score of a specific cat
 // ─────────────────────────────────────────────
-exports.updateCatScore = async (req, res) => {};
+exports.updateCatScore = async (req, res) => {
+  // Extract 'id' from the URL parameters and 'score' from the request body
+  const { id } = req.params;
+  const { score } = req.body;
+
+  // Validate that the score is a number
+  if (typeof score !== "number") {
+    return res.status(400).send("Score must be a number");
+  }
+
+  try {
+    // Update the score for the image with the given id
+    const result = await pool.query(
+      "UPDATE images SET score = $1 WHERE id = $2",
+      [score, id]
+    );
+
+    // If no rows were affected, the image was not found
+    if (result.rowCount === 0) {
+      return res.status(404).send("Image not found");
+    }
+
+    // Respond with a success message
+    res.send("Image score updated successfully");
+  } catch (err) {
+    // Handle errors that occur during the query
+    console.error(err);
+    res.status(500).send("Error updating score");
+  }
+};
