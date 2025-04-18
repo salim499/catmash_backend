@@ -27,12 +27,16 @@ exports.fetchAllCats = async (req, res) => {
   // Parse the offset from the query parameters (default to 0 if not provided)
   const offset = parseInt(req.query.offset) || 0;
   // Parse the limit from the query parameters (default to 10 if not provided)
-  const limit = parseInt(req.query.limit) || 10;
+  const limit = parseInt(req.query.limit) || 9;
 
   try {
+    //
     // Execute a SQL query to fetch images, ordered by score in descending order
     const result = await pool.query(
-      "SELECT * FROM images ORDER BY score DESC, id ASC LIMIT $1 OFFSET $2",
+      `SELECT * FROM images 
+ORDER BY score DESC, CAST(REGEXP_REPLACE(name, '[^0-9]', '', 'g') AS INTEGER) ASC
+LIMIT $1 OFFSET $2
+`,
       [limit, offset]
     );
 
