@@ -11,9 +11,11 @@ const pool = new Pool({
 // ─────────────────────────────────────────────
 exports.showHomePage = async (req, res) => {
   try {
+    // Send Welcome message
     res.send("Welcome to the Cat API 🐱");
   } catch (err) {
     console.error(err);
+    // Log any errors and Send an error message in case of failure
     res.status(500).send("Oups, error");
   }
 };
