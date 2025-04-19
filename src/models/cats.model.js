@@ -34,9 +34,9 @@ exports.fetchAllCats = async (req, res) => {
     // Execute a SQL query to fetch images, ordered by score in descending order
     const result = await pool.query(
       `SELECT * FROM images 
-ORDER BY score DESC, CAST(REGEXP_REPLACE(name, '[^0-9]', '', 'g') AS INTEGER) ASC
-LIMIT $1 OFFSET $2
-`,
+       ORDER BY score DESC, CAST(REGEXP_REPLACE(name, '[^0-9]', '', 'g') AS INTEGER) ASC
+       LIMIT $1 OFFSET $2
+      `,
       [limit, offset]
     );
 
